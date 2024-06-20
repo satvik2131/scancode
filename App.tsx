@@ -1,18 +1,18 @@
+import 'react-native-gesture-handler';
 import React, {createContext, useState} from 'react';
 import {SafeAreaView, useColorScheme} from 'react-native';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {QRScanner} from './src/components/QRScanner';
+import {createStackNavigator} from '@react-navigation/stack';
+import {QrScanner} from './src/components/QrScanner';
 import {UniqueCodeProvider} from './src/Global/UniqueCodeContext';
+import {TakePhoto} from './src/components/TakePhoto';
 
-// const [code, setCode] = useState<string>('');
-
-// export const UniqueCodeContext = createContext({
-//   code: code,
-//   setCode: setCode,
-// });
+export type RootStackParamList = {
+  QrScanner: undefined;
+  TakePhoto: undefined;
+};
 
 function App(): React.JSX.Element {
   //   const isDarkMode = useColorScheme() === 'dark';
@@ -22,17 +22,21 @@ function App(): React.JSX.Element {
   //   };
   // <SafeAreaView style={backgroundStyle}></SafeAreaView>;
 
-  const Stack = createNativeStackNavigator();
+  const Stack = createStackNavigator<RootStackParamList>();
 
   return (
     <UniqueCodeProvider>
       <NavigationContainer>
-        <Stack.Navigator>
+        <Stack.Navigator initialRouteName="TakePhoto">
           <Stack.Screen
-            name="QRScanner"
-            component={QRScanner}
+            name="QrScanner"
+            component={QrScanner}
             options={{title: 'QR'}}
           />
+          <Stack.Screen
+            name="TakePhoto"
+            options={{title: 'take 2 photos'}}
+            component={TakePhoto}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </UniqueCodeProvider>
