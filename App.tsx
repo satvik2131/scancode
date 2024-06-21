@@ -15,19 +15,12 @@ export type RootStackParamList = {
 };
 
 function App(): React.JSX.Element {
-  //   const isDarkMode = useColorScheme() === 'dark';
-
-  //   const backgroundStyle = {
-  //     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  //   };
-  // <SafeAreaView style={backgroundStyle}></SafeAreaView>;
-
   const Stack = createStackNavigator<RootStackParamList>();
 
   return (
     <UniqueCodeProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MediaCapture">
+        <Stack.Navigator initialRouteName="QrScanner">
           <Stack.Screen
             name="QrScanner"
             component={QrScanner}

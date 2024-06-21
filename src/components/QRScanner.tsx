@@ -7,9 +7,9 @@ import {
   useCodeScanner,
 } from 'react-native-vision-camera';
 import {useUniqueCode} from '../Global/UniqueCodeContext';
-import {uniqueCodeReference} from '../Database/DatabaseInitialize';
 import {RootStackParamList} from '../../App';
 import {StackNavigationProp} from '@react-navigation/stack';
+import database from '@react-native-firebase/database';
 
 interface QrScreenNavigationProps {
   navigation: StackNavigationProp<RootStackParamList, 'QrScanner'>;
@@ -20,6 +20,7 @@ export const QrScanner = ({navigation}: QrScreenNavigationProps) => {
   const {setUniqueCode} = useUniqueCode();
   const [move, setMove] = useState(false);
   const [isActive, setIsActive] = useState(true);
+  const uniqueCodeRef = database().ref('code');
 
   useEffect(() => {
     if (move) {
@@ -31,13 +32,14 @@ export const QrScanner = ({navigation}: QrScreenNavigationProps) => {
     codeTypes: ['qr', 'ean-13', 'code-128'],
     onCodeScanned: async codes => {
       setUniqueCode(codes[0].value!!);
-      const uniqueCode = await uniqueCodeReference
+
+      const uniqueCode = await uniqueCodeRef
         .child(codes[0].value!!)
         .once('value');
 
       // setShowError(true);
       if (uniqueCode.exists()) {
-        ToastAndroid.show('Code already exist', ToastAndroid.SHORT);
+        Alert.alert('Code already exist');
       } else {
         setIsActive(false);
         setMove(true);

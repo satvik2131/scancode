@@ -4,6 +4,7 @@ import {Camera, PhotoFile, useCameraDevice} from 'react-native-vision-camera';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {useNavigation} from '@react-navigation/native';
 import {uploadPhotosAndVideo} from '../CloudFirestore';
+import {useUniqueCode} from '../Global/UniqueCodeContext';
 
 type RootStackParamList = {
   Camera: undefined;
@@ -26,6 +27,7 @@ export const MediaCapture = () => {
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const device = useCameraDevice('back');
   const [captureType, setCaptureType] = useState('Take Photo');
+  const {uniqueCode} = useUniqueCode();
 
   //Requesting camera permissions
   useEffect(() => {
@@ -63,7 +65,7 @@ export const MediaCapture = () => {
           onRecordingFinished: video => {
             console.log(video.path);
             Alert.alert('Video recorded', 'Recording finished successfully.');
-            uploadPhotosAndVideo(photo1, photo2, video);
+            uploadPhotosAndVideo(photo1, photo2, video, uniqueCode!!);
           },
           onRecordingError: error => {
             console.error('err:', error);
@@ -73,7 +75,6 @@ export const MediaCapture = () => {
         });
 
         setTimeout(async () => {
-          console.log(isRecording);
           await stopRecording();
         }, 10000);
       } catch (error) {
@@ -84,8 +85,11 @@ export const MediaCapture = () => {
   };
 
   const stopRecording = async () => {
-    await cameraRef.current?.stopRecording();
-    setCaptureType('Done');
+    if (isRecording) {
+      await cameraRef.current?.stopRecording();
+      setCaptureType('Done');
+      setIsRecording(false);
+    }
   };
 
   if (device == null || !hasPermission)
