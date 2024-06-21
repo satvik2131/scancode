@@ -23,7 +23,7 @@ export const QrScanner = ({navigation}: QrScreenNavigationProps) => {
 
   useEffect(() => {
     if (move) {
-      navigation.navigate('TakePhoto');
+      navigation.navigate('MediaCapture');
     }
   }, [move]);
 

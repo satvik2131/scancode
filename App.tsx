@@ -7,11 +7,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {QrScanner} from './src/components/QrScanner';
 import {UniqueCodeProvider} from './src/Global/UniqueCodeContext';
-import {TakePhoto} from './src/components/TakePhoto';
+import {MediaCapture} from './src/components/MediaCapture';
 
 export type RootStackParamList = {
   QrScanner: undefined;
-  TakePhoto: undefined;
+  MediaCapture: undefined;
 };
 
 function App(): React.JSX.Element {
@@ -27,16 +27,16 @@ function App(): React.JSX.Element {
   return (
     <UniqueCodeProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="TakePhoto">
+        <Stack.Navigator initialRouteName="MediaCapture">
           <Stack.Screen
             name="QrScanner"
             component={QrScanner}
             options={{title: 'QR'}}
           />
           <Stack.Screen
-            name="TakePhoto"
+            name="MediaCapture"
             options={{title: 'take 2 photos'}}
-            component={TakePhoto}></Stack.Screen>
+            component={MediaCapture}></Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer>
     </UniqueCodeProvider>
